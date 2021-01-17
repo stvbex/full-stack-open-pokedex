@@ -2,7 +2,7 @@ name: Hello World!
 
 on:
   push:
-    brenches:
+    branches:
       - master
 
 jobs:
