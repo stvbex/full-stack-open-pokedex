@@ -35,3 +35,4 @@ jobs:
             heroku_email: ${{secrets.MY_EMAIL}}
             healthcheck: "https://${{secrets.HEROKU_APP_NAME}}.herokuapp.com/version"
             checkstring: "1"
+            rollbackonhealthcheckfailed: true
