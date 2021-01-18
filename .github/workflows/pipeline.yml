@@ -27,4 +27,3 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-          spec: cypress/integration/e2e_test.js
