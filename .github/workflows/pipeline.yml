@@ -42,7 +42,8 @@ jobs:
           rollbackonhealthcheckfailed: true
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.33.0
-        if: ${{github.event_name == 'push'}}
+        if: ${{github.event_name == 'push'}} && ! contains(env.COMMIT_MESSAGES, '#skip')
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           DEFAULT_BUMP: patch
+          COMMIT_MESSAGES: ${{toJson(github.event.commits.*.message)}}

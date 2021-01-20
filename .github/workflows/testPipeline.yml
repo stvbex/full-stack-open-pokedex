@@ -27,3 +27,8 @@ jobs:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         if: contains(env.COMMIT_MESSAGES, '#fghj')
         run: echo yes it does
+      - name: commit messages does not contain '#fghj'
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        if: ! contains(env.COMMIT_MESSAGES, '#fghj')
+        run: echo no it doesnt
