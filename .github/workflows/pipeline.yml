@@ -28,6 +28,10 @@ jobs:
         env:
           COMMIT_MESSAGES_CONTAINS_SKIP: ${{ contains(join(github.event.commits.*.message, ''), '#skip') }}
         run: echo "$COMMIT_MESSAGES_CONTAINS_SKIP"
+      - name: TMP echo not contains skip
+        env:
+          COMMIT_MESSAGES_NOT_CONTAINS_SKIP: ${{ ! contains(join(github.event.commits.*.message, ''), '#skip') }}
+        run: echo "$COMMIT_MESSAGES_NOT_CONTAINS_SKIP"
       - name: npm install
         run: npm i
       - name: lint
@@ -54,7 +58,8 @@ jobs:
           rollbackonhealthcheckfailed: true
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.33.0
-        if: ${{github.event_name == 'push'}} && (! contains(join(${{ github.event.commits.*.message }}, ''), '#skip'))
+        if: ${{github.event_name == 'push'}} && (! env.COMMIT_MESSAGES_CONTAINS_SKIP)
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           DEFAULT_BUMP: patch
+          COMMIT_MESSAGES_CONTAINS_SKIP: ${{ contains(join(github.event.commits.*.message, ''), '#skip') }}
