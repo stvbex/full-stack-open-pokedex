@@ -34,9 +34,15 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.8.9
         if: ${{github.event_name == 'push'}}
         with:
-            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-            heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-            heroku_email: ${{secrets.MY_EMAIL}}
-            healthcheck: "https://${{secrets.HEROKU_APP_NAME}}.herokuapp.com/health"
-            checkstring: ok
-            rollbackonhealthcheckfailed: true
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.MY_EMAIL}}
+          healthcheck: "https://${{secrets.HEROKU_APP_NAME}}.herokuapp.com/health"
+          checkstring: ok
+          rollbackonhealthcheckfailed: true
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.33.0
+        if: ${{github.event_name == 'push'}}
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          DEFAULT_BUMP: patch
