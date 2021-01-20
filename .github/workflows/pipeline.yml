@@ -16,6 +16,18 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: TMP echo msges join
+        env:
+          COMMIT_MESSAGES: ${{ join(github.event.commits.*.message) }}
+        run: echo "$COMMIT_MESSAGES"
+      - name: TMP echo msges sep
+        env:
+          COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, '') }}
+        run: echo "$COMMIT_MESSAGES"
+      - name: TMP echo contains skip
+        env:
+          COMMIT_MESSAGES_CONTAINS_SKIP: ${{ contains(join(github.event.commits.*.message, ''), '#skip') }}
+        run: echo "$COMMIT_MESSAGES_CONTAINS_SKIP"
       - name: npm install
         run: npm i
       - name: lint
@@ -40,12 +52,6 @@ jobs:
           healthcheck: "https://${{secrets.HEROKU_APP_NAME}}.herokuapp.com/health"
           checkstring: ok
           rollbackonhealthcheckfailed: true
-      - name: TMP echo msges
-        run: echo ${{ toJson(github.event.commits.*.message) }}
-      - name: TMP echo join
-        run: echo ${{ join(github.event.commits.*.message, '') }}
-      - name: TMP echo contains
-        run: echo contains(join(${{ github.event.commits.*.message }}, ''), '#skip')
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.33.0
         if: ${{github.event_name == 'push'}} && (! contains(join(${{ github.event.commits.*.message }}, ''), '#skip'))
