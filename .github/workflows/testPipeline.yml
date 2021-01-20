@@ -22,6 +22,18 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
+      - name: commit messages - toJson, join
+        env:
+          COMMIT_MESSAGES: ${{ join(toJson(github.event.commits.*.message)) }}
+        run: echo "$COMMIT_MESSAGES"
+      - name: commit messages - join, toJson
+        env:
+          COMMIT_MESSAGES: ${{ toJson(join(github.event.commits.*.message)) }}
+        run: echo "$COMMIT_MESSAGES"
+      - name: commit messages - just join
+        env:
+          COMMIT_MESSAGES: ${{ join(github.event.commits.*.message) }}
+        run: echo "$COMMIT_MESSAGES"
       - name: commit messages contains '#fghj'
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
