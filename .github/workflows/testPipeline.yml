@@ -22,3 +22,8 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
+      - name: commit messages contains '#fghj'
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        if: contains(env.COMMIT_MESSAGES, '#fghj')
+        run: echo yes it does
