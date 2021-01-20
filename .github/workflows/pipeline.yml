@@ -41,11 +41,9 @@ jobs:
           checkstring: ok
           rollbackonhealthcheckfailed: true
       - name: TMP echo msges
-        run: echo ${{ github.event.commits.*.message }}
-      - name: TMP echo msges
-        run: echo ${{ github.event.commits.*.message }}
+        run: echo ${{ toJson(github.event.commits.*.message) }}
       - name: TMP echo join
-        run: echo join(${{ github.event.commits.*.message }}, '')
+        run: echo ${{ join(github.event.commits.*.message, '') }}
       - name: TMP echo contains
         run: echo contains(join(${{ github.event.commits.*.message }}, ''), '#skip')
       - name: Bump version and push tag
