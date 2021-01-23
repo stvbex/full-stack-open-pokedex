@@ -47,3 +47,23 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           DEFAULT_BUMP: patch
           COMMIT_MESSAGES_NOT_CONTAINS_SKIP: ${{ ! contains(join(github.event.commits.*.message, ''), '#skip') }}
+      - name: The job has succeeded
+        uses: 8398a7/action-slack@v3
+        fields: repo,message,commit,author,eventName,ref,workflow,job,took
+        custom_payload: |
+          {
+            username: 'github_action',
+            attachments: [{
+              color: 'good',
+              text: `Job succeded in ${process.env.AS_TOOK}`,
+            }]
+          }
+        if: ${{ success() }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: The job has failed
+        uses: 8398a7/action-slack@v3
+        fields: repo,message,commit,author,eventName,ref,workflow,job,took
+        if: ${{ failure() }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
